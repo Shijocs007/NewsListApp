@@ -17,7 +17,9 @@ class NetworkConnectionIntercepter(context : Context) : Interceptor {
         }
 
         var request = chain.request()
-        val url = request.url().newBuilder().addQueryParameter("api_key", "6bf8ddb55a7ad70071bfa67e26407194").build()
+        val url = request.url().newBuilder()
+            .addQueryParameter("apiKey", "1c492daaf9554c5e81d4d66c4b216d8f")
+            .build()
         request = request.newBuilder().url(url).build()
 
         return chain.proceed(request)
