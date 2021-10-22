@@ -14,6 +14,14 @@ class NewsListViewModel @Inject constructor(
     private val repository: NewsListrepository
 ) : ViewModel() {
 
-    val newsList : LiveData<Resource<List<News>>> by lazy { repository.getMoviesList().asLiveData() }
+    lateinit var newsList : LiveData<Resource<List<News>>>
+
+    init {
+        loadNewsList()
+    }
+
+    fun loadNewsList() {
+        newsList = repository.getMoviesList().asLiveData()
+    }
 
 }

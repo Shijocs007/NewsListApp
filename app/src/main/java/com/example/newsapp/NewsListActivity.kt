@@ -1,5 +1,6 @@
 package com.example.newsapp
 
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -21,6 +22,8 @@ class NewsListActivity : AppCompatActivity() {
         binding = ActivityNewsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_fragment)
+
+        initToolbar()
         initObservers()
 
         binding.bottomNav.setOnItemSelectedListener { item ->
@@ -29,6 +32,21 @@ class NewsListActivity : AppCompatActivity() {
                 R.id.nav_bookmarks -> navController.navigate(R.id.nav_bookmark_fragment)
             }
             true
+        }
+
+    }
+
+    private fun initToolbar() {
+        binding.apply {
+            toolbar.apply {
+                setNavigationIcon(R.drawable.ic_menu)
+                navigationIcon!!
+                    .setColorFilter(resources.getColor(R.color.grey_80), PorterDuff.Mode.SRC_ATOP)
+                setTitleTextColor(resources.getColor(R.color.grey_80))
+                setSupportActionBar(this)
+                supportActionBar!!.title = "News"
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            }
         }
     }
 
