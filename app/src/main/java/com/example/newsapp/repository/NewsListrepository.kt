@@ -1,9 +1,11 @@
 package com.example.newsapp.repository
 
 import com.example.newsapp.db.NewsDao
+import com.example.newsapp.models.News
 import com.example.newsapp.models.NewsListResponse
 import com.example.newsapp.network.NewsApi
 import com.example.newsapp.network.networkBoundResource
+import kotlinx.coroutines.flow.Flow
 import om.example.newsapp.db.NewsDatabase
 import retrofit2.Response
 
@@ -21,7 +23,11 @@ class NewsListrepository constructor(private val api : NewsApi, private val dao 
             api.getNewsList(1)
         },
         saveFetchResult = {response ->
-            response.body()?.articles?.let {dao.upsertAll(it) }
+            response.articles?.let {dao.upsertAll(it) }
         }
     )
+
+    fun getBookMarkedList(): Flow<List<News>> {
+        return dao.getMovies(POST_PER_PAGE, 1)
+    }
 }

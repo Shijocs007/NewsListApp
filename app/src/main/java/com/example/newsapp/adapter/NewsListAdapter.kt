@@ -1,5 +1,7 @@
 package com.example.newsapp.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.newsapp.R
+import com.example.newsapp.activities.NewsDetailsActivity
 import com.example.newsapp.databinding.NewsItemBinding
 import com.example.newsapp.models.News
+import com.google.gson.Gson
 
 class NewsListAdapter : ListAdapter<News, NewsListAdapter.NewsViewHolder>(NewsComparator())  {
 
@@ -39,6 +43,11 @@ class NewsListAdapter : ListAdapter<News, NewsListAdapter.NewsViewHolder>(NewsCo
                 title.text = news.title
                 author.text = news.author
                 date.text = news.publishedAt
+
+                itemView.setOnClickListener{
+                    itemView.context.startActivity(Intent( itemView.context, NewsDetailsActivity::class.java)
+                        .putExtra("data", Gson().toJson(news)))
+                }
             }
         }
     }

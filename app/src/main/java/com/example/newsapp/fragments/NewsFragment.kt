@@ -60,9 +60,9 @@ class NewsFragment : Fragment() {
 
             viewModel.newsList.observe(viewLifecycleOwner) { result ->
                 newsAdapter.submitList(result.data)
-                recyclerView.isVisible = result is Resource.Success && result.data?.isNotEmpty() ?: false
+                recyclerView.isVisible = result.data?.isNotEmpty() ?: false
                 shimmerView.isVisible = result is Resource.Loading
-                errorLayout.isVisible = result is Resource.Error
+                errorLayout.isVisible = result is Resource.Error && result.data?.isEmpty() ?: true
                 if(result is Resource.Loading) shimmerView.startShimmer() else shimmerView.stopShimmer()
 
             }

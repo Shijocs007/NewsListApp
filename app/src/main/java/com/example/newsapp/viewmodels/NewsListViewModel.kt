@@ -15,6 +15,7 @@ class NewsListViewModel @Inject constructor(
 ) : ViewModel() {
 
     lateinit var newsList : LiveData<Resource<List<News>>>
+    var bookMarkedList = MutableLiveData<List<News>>()
 
     init {
         loadNewsList()
@@ -22,6 +23,10 @@ class NewsListViewModel @Inject constructor(
 
     fun loadNewsList() {
         newsList = repository.getMoviesList().asLiveData()
+    }
+
+    fun getBookMarkedList() {
+        bookMarkedList = repository.getBookMarkedList().asLiveData() as MutableLiveData<List<News>>
     }
 
 }

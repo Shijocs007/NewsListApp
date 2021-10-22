@@ -14,5 +14,6 @@ data class News (
 	@Expose @SerializedName("url") val url : String?,
 	@Expose @SerializedName("urlToImage") val urlToImage : String?,
 	@Expose @SerializedName("publishedAt") val publishedAt : String?,
-	@Expose @SerializedName("content") val content : String?
+	@Expose @SerializedName("content") val content : String?,
+	val bookmark : Boolean = false
 )
