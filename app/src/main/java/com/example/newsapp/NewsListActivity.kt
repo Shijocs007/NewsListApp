@@ -14,5 +14,13 @@ class NewsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_list)
+
+        initObservers()
+    }
+
+    private fun initObservers() {
+        viewModel.newsList.observe(this@NewsListActivity) { result ->
+            print("")
+        }
     }
 }

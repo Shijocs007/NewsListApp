@@ -3,12 +3,25 @@ package com.example.newsapp.repository
 import com.example.newsapp.db.NewsDao
 import com.example.newsapp.models.NewsListResponse
 import com.example.newsapp.network.NewsApi
+import com.example.newsapp.network.networkBoundResource
 import om.example.newsapp.db.NewsDatabase
 import retrofit2.Response
 
+//https://developer.android.com/jetpack/guide?hl=de#addendum
+
 class NewsListrepository constructor(private val api : NewsApi, private val dao : NewsDao) {
 
-    suspend fun getMoviesList(): Response<NewsListResponse> {
-        return api.getNewsList()
-    }
+    val POST_PER_PAGE = 20
+
+    fun getMoviesList() = networkBoundResource(
+        query = {
+            dao.getMovies(POST_PER_PAGE, 1)
+        },
+        fetch = {
+            api.getNewsList(1)
+        },
+        saveFetchResult = {response ->
+            response.body()?.articles?.let {dao.upsertAll(it) }
+        }
+    )
 }
