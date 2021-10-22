@@ -3,6 +3,9 @@ package com.example.newsapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import com.example.newsapp.databinding.ActivityNewsListBinding
 import com.example.newsapp.viewmodels.NewsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -10,12 +13,23 @@ import dagger.hilt.android.AndroidEntryPoint
 class NewsListActivity : AppCompatActivity() {
 
     private val viewModel: NewsListViewModel by viewModels()
-
+    private lateinit var binding : ActivityNewsListBinding
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_news_list)
 
+        binding = ActivityNewsListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        navController = findNavController(R.id.nav_host_fragment)
         initObservers()
+
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_news -> navController.navigate(R.id.nav_news_fragment)
+                R.id.nav_bookmarks -> navController.navigate(R.id.nav_bookmark_fragment)
+            }
+            true
+        }
     }
 
     private fun initObservers() {
