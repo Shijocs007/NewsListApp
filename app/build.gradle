@@ -62,12 +62,12 @@ dependencies {
     kapt "androidx.room:room-compiler:2.3.0"
 
     //paging
-    implementation "androidx.paging:paging-runtime:3.0.1"
+    implementation "androidx.paging:paging-runtime:3.0.0-alpha05"
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-    //paging
+    //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
 

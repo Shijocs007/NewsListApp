@@ -1,5 +1,8 @@
 package com.example.newsapp.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import com.example.newsapp.db.NewsDao
 import com.example.newsapp.models.News
 import com.example.newsapp.models.NewsListResponse
@@ -15,17 +18,26 @@ class NewsListrepository constructor(private val api : NewsApi, private val dao 
 
     val POST_PER_PAGE = 20
 
-    fun getMoviesList() = networkBoundResource(
-        query = {
-            dao.getMovies(POST_PER_PAGE, 1)
-        },
-        fetch = {
-            api.getNewsList(1)
-        },
-        saveFetchResult = {response ->
-            response.articles?.let {dao.upsertAll(it) }
-        }
-    )
+//    fun getMoviesList() = networkBoundResource(
+//        query = {
+//            dao.getMovies(POST_PER_PAGE, 1)
+//        },
+//        fetch = {
+//            api.getNewsList(1)
+//        },
+//        saveFetchResult = {response ->
+//            response.articles?.let {dao.upsertAll(it) }
+//        }
+//    )
+
+    fun getNewsList() = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            maxSize = 100,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = { NewsListPagingSource(api,dao) }
+    ).flow
 
     fun getBookMarkedList(): Flow<List<News>> {
         return dao.getBookMarkedList()

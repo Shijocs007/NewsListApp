@@ -13,6 +13,7 @@ import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsListAdapter
 import com.example.newsapp.databinding.FragmentNewsBinding
 import com.example.newsapp.network.Resource
+import com.example.newsapp.utils.Enums
 import com.example.newsapp.viewmodels.NewsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,18 +37,20 @@ class NewsFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_news, container, false
         )
+        initObservers()
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
     }
 
     private fun initObservers() {
 
+
         binding.apply {
+
+            shimmerView.startShimmer()
 
             noConnection.setOnClickListener {
                 viewModel.loadNewsList()
@@ -59,12 +62,17 @@ class NewsFragment : Fragment() {
             }
 
             viewModel.newsList.observe(viewLifecycleOwner) { result ->
-                newsAdapter.submitList(result.data)
-                recyclerView.isVisible = result.data?.isNotEmpty() ?: false
-                shimmerView.isVisible = result is Resource.Loading
-                errorLayout.isVisible = result is Resource.Error && result.data?.isEmpty() ?: true
-                if(result is Resource.Loading) shimmerView.startShimmer() else shimmerView.stopShimmer()
+                newsAdapter.submitData(viewLifecycleOwner.lifecycle, result)
+            }
 
+            viewModel.state.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    Enums.PageState.SUCCESS -> {
+                        shimmerView.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        shimmerView.stopShimmer()
+                    }
+                }
             }
         }
     }

@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsApi {
-    @GET("v2/everything?q=bitcoin")
+    @GET("v2/top-headlines?country=us")
     suspend fun getNewsList(@Query("page") page : Int = 1) : NewsListResponse
 }

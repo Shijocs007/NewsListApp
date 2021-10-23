@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
+import com.example.newsapp.adapter.BookMarkAdapter
 import com.example.newsapp.adapter.NewsListAdapter
 import com.example.newsapp.databinding.FragmentNewsBinding
 import com.example.newsapp.network.Resource
@@ -21,7 +22,7 @@ class BookmarkFragment : Fragment() {
 
     private val viewModel: NewsListViewModel by activityViewModels()
     private lateinit var binding: FragmentNewsBinding
-    val newsAdapter = NewsListAdapter()
+    val newsAdapter = BookMarkAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +37,12 @@ class BookmarkFragment : Fragment() {
             inflater, R.layout.fragment_news, container, false
         )
         viewModel.getBookMarkedList()
+        initObservers()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObservers()
     }
 
     private fun initObservers() {
@@ -58,7 +59,7 @@ class BookmarkFragment : Fragment() {
             }
 
             viewModel.bookMarkedList.observe(viewLifecycleOwner) { result ->
-                newsAdapter.submitList(result)
+               newsAdapter.submitList(result)
                 recyclerView.isVisible = result.isNotEmpty()
                 shimmerView.isVisible = result.isEmpty()
             }

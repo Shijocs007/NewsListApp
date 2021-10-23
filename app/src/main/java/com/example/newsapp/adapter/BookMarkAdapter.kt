@@ -1,12 +1,10 @@
 package com.example.newsapp.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -16,7 +14,7 @@ import com.example.newsapp.databinding.NewsItemBinding
 import com.example.newsapp.models.News
 import com.google.gson.Gson
 
-class NewsListAdapter : PagingDataAdapter<News, NewsListAdapter.NewsViewHolder>(NEWS_COMPARATOR) {
+class BookMarkAdapter : ListAdapter<News, BookMarkAdapter.NewsViewHolder>(NewsComparator())  {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): NewsViewHolder {
@@ -31,8 +29,7 @@ class NewsListAdapter : PagingDataAdapter<News, NewsListAdapter.NewsViewHolder>(
         }
     }
 
-    class NewsViewHolder(private val binding: NewsItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class NewsViewHolder(private val binding: NewsItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(news: News) {
             binding.apply {
@@ -46,23 +43,20 @@ class NewsListAdapter : PagingDataAdapter<News, NewsListAdapter.NewsViewHolder>(
                 author.text = news.author
                 date.text = news.publishedAt
 
-                itemView.setOnClickListener {
+                itemView.setOnClickListener{
                     itemView.context.startActivity(
-                        Intent(itemView.context, NewsDetailsActivity::class.java)
-                            .putExtra("data", Gson().toJson(news))
-                    )
+                        Intent( itemView.context, NewsDetailsActivity::class.java)
+                        .putExtra("data", Gson().toJson(news)))
                 }
             }
         }
     }
 
-    companion object {
-        private val NEWS_COMPARATOR = object : DiffUtil.ItemCallback<News>() {
-            override fun areItemsTheSame(oldItem: News, newItem: News) =
-                oldItem.url == newItem.url
+    class NewsComparator : DiffUtil.ItemCallback<News>() {
+        override fun areItemsTheSame(oldItem: News, newItem: News) =
+            oldItem.url == newItem.url
 
-            override fun areContentsTheSame(oldItem: News, newItem: News) =
-                oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: News, newItem: News) =
+            oldItem == newItem
     }
 }

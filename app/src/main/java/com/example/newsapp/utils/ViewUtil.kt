@@ -2,6 +2,7 @@ package com.example.newsapp.utils
 
 import android.os.Build
 import android.text.Html
+import androidx.lifecycle.MutableLiveData
 import com.airbnb.lottie.LottieAnimationView
 
 fun BookMarkLottieview.setLotteState(lotteView: LottieAnimationView, state: Boolean) {
@@ -19,5 +20,13 @@ fun String.parseHtmlString() : String {
         Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY).toString()
     } else {
         Html.fromHtml(this).toString()
+    }
+}
+
+fun <T : Any?> MutableLiveData<T>.default(initialValue:T) = apply {
+    try {
+        setValue(initialValue)
+    }catch (e:java.lang.Exception){
+
     }
 }
