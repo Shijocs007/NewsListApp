@@ -36,8 +36,12 @@ class BookmarkFragment : Fragment() {
             inflater, R.layout.fragment_news, container, false
         )
         viewModel.getBookMarkedList()
-        initObservers()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
     }
 
     private fun initObservers() {

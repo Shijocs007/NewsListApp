@@ -7,6 +7,7 @@ import com.example.newsapp.network.LikesApi
 import com.example.newsapp.network.NewsApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
@@ -20,13 +21,13 @@ class NewsdetailsRepository constructor(
         return flow {
             val result = api.getLikes(url)
             emit(result)
-        }
+        }.catch {  }
     }
 
    fun getComments(url : String) : Flow<Comments> {
        return flow {
            val result = api.getComments(url)
            emit(result)
-       }
+       } .catch {  }
    }
 }

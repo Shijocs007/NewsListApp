@@ -13,17 +13,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsDetailsViewmodel  @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
-    private val repository: NewsdetailsRepository
+class NewsDetailsViewmodel  @Inject constructor( private val repository: NewsdetailsRepository
 ) : ViewModel() {
 
     var likeAndComment = MutableLiveData<LikeAndComment>()
 
 
     fun getLikesAndComments(news : News) {
-        var url = news.url.replace("https://", "")
-        url = url.replace("/", "-")
+       val url = getUrlId(news.url)
         viewModelScope.launch {
             repository.getLikes(news.url).zip(repository.getComments(news.url)) {likes, comments ->
                 LikeAndComment(likes = likes.likes, comments = comments.comments)
@@ -38,6 +35,11 @@ class NewsDetailsViewmodel  @Inject constructor(
         viewModelScope.launch {
             repository.setBookMarked(bookMarked, id)
         }
+    }
+
+    public fun getUrlId(url: String): Any {
+        var url = url.replace("https://", "")
+        return url.replace("/", "-")
     }
 
 }

@@ -36,13 +36,13 @@ class NewsFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_news, container, false
         )
-        initObservers()
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObservers()
     }
 
     private fun initObservers() {
