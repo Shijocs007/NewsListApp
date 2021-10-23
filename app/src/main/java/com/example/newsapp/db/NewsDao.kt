@@ -15,4 +15,10 @@ interface NewsDao {
 
     @Query("SELECT * FROM News LIMIT :limit OFFSET :offset")
     fun getMovies(limit: Int, offset: Int): Flow<List<News>>
+
+    @Query("UPDATE News SET bookmark = :value WHERE url = :url")
+    suspend fun setBookmarked(value : Boolean, url : String)
+
+    @Query("SELECT * FROM News WHERE bookmark = :bookmark")
+    fun getBookMarkedList(bookmark : Boolean = true): Flow<List<News>>
 }

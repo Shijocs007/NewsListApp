@@ -3,6 +3,7 @@ package com.example.newsapp.di
 import com.example.newsapp.db.NewsDao
 import com.example.newsapp.network.NewsApi
 import com.example.newsapp.repository.NewsListrepository
+import com.example.newsapp.repository.NewsdetailsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +26,21 @@ class RepositoryModule {
     @Provides
     fun provideMovieRepository(api: NewsApi, dao: NewsDao) : NewsListrepository {
         return NewsListrepository(
+            api,
+            dao
+        )
+    }
+
+    /**
+     * provide movie details repository class
+     *
+     * @param api NewsApi instance where we written all api requests
+     * @param dao to get the data form local db
+     * @return repository module @link{NewsdetailsRepository}
+     * */
+    @Provides
+    fun provideMovieDetailsRepository(api: NewsApi, dao: NewsDao) : NewsdetailsRepository {
+        return NewsdetailsRepository(
             api,
             dao
         )

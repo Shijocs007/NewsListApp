@@ -28,6 +28,6 @@ class NewsListrepository constructor(private val api : NewsApi, private val dao 
     )
 
     fun getBookMarkedList(): Flow<List<News>> {
-        return dao.getMovies(POST_PER_PAGE, 1)
+        return dao.getBookMarkedList()
     }
 }

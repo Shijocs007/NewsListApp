@@ -29,6 +29,21 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/Toolbar.Light">
 
+                <RelativeLayout
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.example.newsapp.utils.BookMarkLottieview
+                        android:id="@+id/bookmark"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        app:lottie_fileName="lotte_bookmark.json" />
+
+                </RelativeLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
