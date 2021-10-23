@@ -15,8 +15,17 @@ class NewsdetailsRepository constructor(
     private val api : LikesApi,
     private val dao : NewsDao) {
 
+    /**
+     * set book marked item value in local database
+     * @param bookMarked either true or false
+     */
     suspend fun setBookMarked(bookMarked: Boolean, id: String) = dao.setBookmarked(bookMarked, id)
 
+    /**
+     * get the number of likes for the article
+     * @param url id for the network request
+     * return Flow object of {@see Likes}
+     */
     fun getLikes(url : String) : Flow<Likes> {
         return flow {
             val result = api.getLikes(url)
@@ -24,6 +33,11 @@ class NewsdetailsRepository constructor(
         }.catch {  }
     }
 
+    /**
+     * get the number of comments for the article
+     * @param url id for the network request
+     * return Flow object of {@see Comments}
+     */
    fun getComments(url : String) : Flow<Comments> {
        return flow {
            val result = api.getComments(url)

@@ -24,7 +24,6 @@ class NewsListActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment)
 
         initToolbar()
-        initObservers()
 
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -50,9 +49,4 @@ class NewsListActivity : AppCompatActivity() {
         }
     }
 
-    private fun initObservers() {
-        viewModel.newsList.observe(this@NewsListActivity) { result ->
-            print("")
-        }
-    }
 }

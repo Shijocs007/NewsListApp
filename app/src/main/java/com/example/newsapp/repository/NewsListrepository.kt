@@ -2,43 +2,33 @@ package com.example.newsapp.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.liveData
 import com.example.newsapp.db.NewsDao
 import com.example.newsapp.models.News
-import com.example.newsapp.models.NewsListResponse
 import com.example.newsapp.network.NewsApi
-import com.example.newsapp.network.networkBoundResource
 import kotlinx.coroutines.flow.Flow
-import om.example.newsapp.db.NewsDatabase
-import retrofit2.Response
 
-//https://developer.android.com/jetpack/guide?hl=de#addendum
+class NewsListrepository constructor(
+    private val api : NewsApi,
+    private val dao : NewsDao,
+    private val source: NewsListPagingSource) {
 
-class NewsListrepository constructor(private val api : NewsApi, private val dao : NewsDao) {
-
-    val POST_PER_PAGE = 20
-
-//    fun getMoviesList() = networkBoundResource(
-//        query = {
-//            dao.getMovies(POST_PER_PAGE, 1)
-//        },
-//        fetch = {
-//            api.getNewsList(1)
-//        },
-//        saveFetchResult = {response ->
-//            response.articles?.let {dao.upsertAll(it) }
-//        }
-//    )
-
+    /**
+     * get the list of news with jetpack paging library
+     * @return flow object of paging library
+     */
     fun getNewsList() = Pager(
         config = PagingConfig(
             pageSize = 20,
             maxSize = 100,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = { NewsListPagingSource(api,dao) }
+        pagingSourceFactory = { source }
     ).flow
 
+    /**
+     * get the bookmarked news saved in local db
+     * @return list of book marked news
+     */
     fun getBookMarkedList(): Flow<List<News>> {
         return dao.getBookMarkedList()
     }

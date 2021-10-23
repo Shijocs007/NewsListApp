@@ -11,9 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapter.BookMarkAdapter
-import com.example.newsapp.adapter.NewsListAdapter
 import com.example.newsapp.databinding.FragmentNewsBinding
-import com.example.newsapp.network.Resource
 import com.example.newsapp.viewmodels.NewsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,9 +39,6 @@ class BookmarkFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 
     private fun initObservers() {
 
@@ -61,7 +56,7 @@ class BookmarkFragment : Fragment() {
             viewModel.bookMarkedList.observe(viewLifecycleOwner) { result ->
                newsAdapter.submitList(result)
                 recyclerView.isVisible = result.isNotEmpty()
-                shimmerView.isVisible = result.isEmpty()
+                errorLayout.isVisible = result.isEmpty()
             }
         }
 

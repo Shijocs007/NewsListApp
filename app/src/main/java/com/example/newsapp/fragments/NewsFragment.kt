@@ -5,17 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapter.NewsListAdapter
 import com.example.newsapp.databinding.FragmentNewsBinding
-import com.example.newsapp.network.Resource
 import com.example.newsapp.utils.Enums
 import com.example.newsapp.viewmodels.NewsListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 
 @AndroidEntryPoint
@@ -41,17 +40,13 @@ class NewsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     private fun initObservers() {
 
 
         binding.apply {
 
             shimmerView.startShimmer()
-
+            shimmerView.visibility = View.VISIBLE
             noConnection.setOnClickListener {
                 viewModel.loadNewsList()
             }
@@ -67,6 +62,11 @@ class NewsFragment : Fragment() {
 
             viewModel.state.observe(viewLifecycleOwner) { state ->
                 when (state) {
+                    Enums.PageState.LOADING -> {
+                        shimmerView.visibility = View.VISIBLE
+                        recyclerView.visibility = View.GONE
+                        shimmerView.startShimmer()
+                    }
                     Enums.PageState.SUCCESS -> {
                         shimmerView.visibility = View.GONE
                         recyclerView.visibility = View.VISIBLE

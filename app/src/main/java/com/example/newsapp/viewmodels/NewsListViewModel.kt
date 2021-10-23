@@ -4,11 +4,11 @@ import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.newsapp.models.News
-import com.example.newsapp.network.Resource
 import com.example.newsapp.repository.NewsListrepository
 import com.example.newsapp.utils.Enums
 import com.example.newsapp.utils.default
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -19,6 +19,12 @@ class NewsDetailsViewmodel  @Inject constructor( private val repository: Newsdet
     var likeAndComment = MutableLiveData<LikeAndComment>()
 
 
+    /**
+     * This method perform two parellel network operation using coroutine flow zip operator
+     * first request for Likes and second for comments
+     *
+     * @seeLikeAndComment
+     */
     fun getLikesAndComments(news : News) {
        val url = getUrlId(news.url)
         viewModelScope.launch {

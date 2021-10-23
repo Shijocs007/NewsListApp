@@ -79,6 +79,12 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
     }
 
+    /**
+     * provide NewsApi instance
+     *
+     * @param retrofit instance
+     * @return retrofit instance
+     * */
     @Singleton
     @Provides
     fun provideNewsService(retrofit: Retrofit.Builder): NewsApi {
@@ -87,6 +93,13 @@ object NetworkModule {
             .create(NewsApi::class.java)
     }
 
+    /**
+     * provide retrofit builder for LikesApi
+     *
+     * @param gson for json to object convert
+     * @param okHttpClient
+     * @return retrofit instance
+     * */
     @Named("LikesApi")
     @Singleton
     @Provides
@@ -97,6 +110,12 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
     }
 
+    /**
+     * provide LikesApi instance
+     *
+     * @param retrofit instance
+     * @return retrofit instance
+     * */
     @Singleton
     @Provides
     fun provideLikesService(@Named("LikesApi") retrofit: Retrofit.Builder): LikesApi {

@@ -6,6 +6,14 @@ import com.example.newsapp.utils.NoInternetException
 import okhttp3.Interceptor
 import okhttp3.Response
 
+
+/**
+ * This class is custom okhttp interceptor class for retrofit
+ * we will add this interceptor while building retrofit instance
+ * each connection will be intercepted and  throws{@link NoInternetException},
+ * if internet not available
+ * @see NetworkModule
+ */
 class NetworkConnectionIntercepter(context : Context) : Interceptor {
 
     private val appContext = context.applicationContext
