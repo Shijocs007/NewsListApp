@@ -12,6 +12,8 @@ import com.example.newsapp.databinding.ActivityNewsDetailsBinding
 import com.example.newsapp.databinding.ActivityNewsListBinding
 import com.example.newsapp.models.News
 import com.example.newsapp.utils.BookMarkLottieview
+import com.example.newsapp.utils.parseHtmlString
+import com.example.newsapp.utils.setLotteState
 import com.example.newsapp.viewmodels.NewsDetailsViewmodel
 import com.example.newsapp.viewmodels.NewsListViewModel
 import com.google.gson.GsonBuilder
@@ -38,18 +40,19 @@ class NewsDetailsActivity : AppCompatActivity() {
         data.let {
             var news = GsonBuilder().create().fromJson(it, News::class.java)
             if(news != null){
+                viewModel.getLikesAndComments(news)
                 binding.apply {
                     title.text = news.title
                     author.text = news.author
                     date.text = news.publishedAt
-                    content.text = news.content
+                    content.text = news.description?.parseHtmlString()
                     Glide.with(content)
                         .load(news.urlToImage)
                         .placeholder(R.drawable.image_place_holder)
                         .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .into(image)
                     bookmark.setAnimation("lotte_bookmark_light.json")
-                    setLotteState(bookmark as LottieAnimationView,news.bookmark)
+                    bookmark.setLotteState(bookmark as LottieAnimationView,news.bookmark)
 
                     bookmark.setOnClickListener {
 
@@ -84,6 +87,13 @@ class NewsDetailsActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+
+            }
+
+            viewModel.likeAndComment.observe(this@NewsDetailsActivity) {
+                binding.likes.text = "${it.likes} Likes"
+                binding.comments.text = "${it.comments} Comments"
             }
         }
     }
@@ -91,19 +101,10 @@ class NewsDetailsActivity : AppCompatActivity() {
     private fun initToolbar() {
         binding.toolbar.apply {
             setSupportActionBar(this)
+            setTitleTextColor(resources.getColor(R.color.grey_80))
             supportActionBar?.title = "News Details"
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        }
-    }
-
-    fun setLotteState(lotteView: LottieAnimationView, state: Boolean) {
-        if(state){
-            lotteView.setMinAndMaxFrame(0,62)
-            lotteView.frame = 62
-        }else{
-            lotteView.setMinAndMaxFrame(70,126)
-            lotteView.frame = 126
         }
     }
 }

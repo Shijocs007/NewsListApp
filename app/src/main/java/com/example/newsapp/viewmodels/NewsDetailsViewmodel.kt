@@ -1,11 +1,14 @@
 package com.example.newsapp.viewmodels
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.newsapp.models.LikeAndComment
+import com.example.newsapp.models.Likes
+import com.example.newsapp.models.News
 import com.example.newsapp.repository.NewsListrepository
 import com.example.newsapp.repository.NewsdetailsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,6 +18,20 @@ class NewsDetailsViewmodel  @Inject constructor(
     private val repository: NewsdetailsRepository
 ) : ViewModel() {
 
+    var likeAndComment = MutableLiveData<LikeAndComment>()
+
+
+    fun getLikesAndComments(news : News) {
+        var url = news.url.replace("https://", "")
+        url = url.replace("/", "-")
+        viewModelScope.launch {
+            repository.getLikes(news.url).zip(repository.getComments(news.url)) {likes, comments ->
+                LikeAndComment(likes = likes.likes, comments = comments.comments)
+            }.collect {
+                likeAndComment.value = it
+            }
+        }
+    }
 
 
     fun setBookMarked(bookMarked: Boolean, id : String) {
@@ -22,6 +39,5 @@ class NewsDetailsViewmodel  @Inject constructor(
             repository.setBookMarked(bookMarked, id)
         }
     }
-
 
 }

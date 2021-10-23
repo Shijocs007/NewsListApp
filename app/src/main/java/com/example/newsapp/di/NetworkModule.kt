@@ -1,6 +1,7 @@
 package com.example.newsapp.di
 
 import android.content.Context
+import com.example.newsapp.network.LikesApi
 import com.example.newsapp.network.NetworkConnectionIntercepter
 import com.example.newsapp.network.NewsApi
 import com.google.gson.Gson
@@ -13,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -20,6 +22,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     const val BASE_URL = "https://newsapi.org/"
+    const val LIKES_BASE_URL = "https://cn-news-info-api.herokuapp.com/"
 
     /**
      * provides Gson for retrofit
@@ -82,5 +85,23 @@ object NetworkModule {
         return retrofit
             .build()
             .create(NewsApi::class.java)
+    }
+
+    @Named("LikesApi")
+    @Singleton
+    @Provides
+    fun provideLikeRetrofit(gson: Gson, okHttpClient: OkHttpClient) :  Retrofit.Builder {
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(LIKES_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+    }
+
+    @Singleton
+    @Provides
+    fun provideLikesService(@Named("LikesApi") retrofit: Retrofit.Builder): LikesApi {
+        return retrofit
+            .build()
+            .create(LikesApi::class.java)
     }
 }

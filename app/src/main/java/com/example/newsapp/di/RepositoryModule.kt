@@ -1,6 +1,7 @@
 package com.example.newsapp.di
 
 import com.example.newsapp.db.NewsDao
+import com.example.newsapp.network.LikesApi
 import com.example.newsapp.network.NewsApi
 import com.example.newsapp.repository.NewsListrepository
 import com.example.newsapp.repository.NewsdetailsRepository
@@ -39,7 +40,7 @@ class RepositoryModule {
      * @return repository module @link{NewsdetailsRepository}
      * */
     @Provides
-    fun provideMovieDetailsRepository(api: NewsApi, dao: NewsDao) : NewsdetailsRepository {
+    fun provideMovieDetailsRepository(api: LikesApi, dao: NewsDao) : NewsdetailsRepository {
         return NewsdetailsRepository(
             api,
             dao
